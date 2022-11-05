@@ -1,9 +1,12 @@
 const express = require("express");
-// require('dotenv').config()
 const connectDB = require("./db/connection");
-const userRotes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const bodyparser =require('body-parser')
 const morgan = require('morgan')
-const cors = require('cors');
+const cors = require('cors')
+
+require('dotenv').config()
 const { notFound, errorHandler } = require("./Middlewears/errorhandling");
 
 
@@ -12,19 +15,24 @@ const PORT = 3001;
 const app = express();
 connectDB();
 app.use(express.json())
-
+app.use(express.urlencoded({ limit: "50mb", extended: false }));
+app.use(bodyparser.json())
 app.use(morgan('dev'))
 app.use(cors())
 
 
 
 
-app.use('/', userRotes)
+
+app.use('/', userRoutes)
+
+app.use('/admin',adminRoutes)
 
 
-
-app.use(notFound)
+app.use(notFound)   
 app.use(errorHandler)
+
+
 
 
 app.listen(PORT, () => {

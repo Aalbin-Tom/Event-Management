@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import API from '../../../url' 
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
@@ -17,8 +18,8 @@ function Signup() {
 
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
+        // const { name, value } = e.target;
+        setFormValues({ ...formValues, [e.target.name]: e.target.value });
     };
     const user = useSelector((state) => state.user.value)
 
@@ -49,7 +50,7 @@ function Signup() {
 
         if (regEx.test(formValues.email) && formValues.name.length != 0 && formValues.email.length != 0 && formValues.phone.length != 0 && formValues.type.length != 0 && formValues.password.length != 0) {
             try {
-                await axios.post('/signup', formValues)
+                await axios.post(`${API}/signup`, formValues)
                 navigate('/login')
                 console.log();
             } catch (error) {
